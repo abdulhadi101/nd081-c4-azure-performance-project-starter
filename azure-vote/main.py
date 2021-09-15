@@ -23,11 +23,13 @@ from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 
 # Logging
 logger = logging.getLogger(__name__)# TODO: Setup logger
-logger.addHandler(AzureLogHandler(
-    connection_string='InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/')
-)
+handler = AzureLogHandler(connection_string='InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/')
+logger.addHandler(handler)
+logger.addHandler(AzureEventHandler(connection_string='InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/'))
 logger.setLevel(logging.INFO)
 # Metrics
+stats = stats_module.stats
+view_manager = stats.view_manager
 exporter = metrics_exporter.new_metrics_exporter(
     connection_string='InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/')
 view_manager.register_exporter(exporter)
@@ -86,10 +88,10 @@ def index():
         # Get current values
         vote1 = r.get(button1).decode('utf-8')
         # TODO: use tracer object to trace cat vote
-        tracer.span(name="CATS")
+        tracer.span(name="CATS HAS A VOTE")
         vote2 = r.get(button2).decode('utf-8')
         # TODO: use tracer object to trace dog vote
-        tracer.span(name="DOGS")
+        tracer.span(name="DOGS HAS A VOTE")
 
         # Return index with values
         return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
