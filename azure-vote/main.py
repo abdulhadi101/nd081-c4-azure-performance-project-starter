@@ -23,7 +23,7 @@ from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 
 stats = stats_module.stats
 view_manager = stats.view_manager
-my_connection_key = 'InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/'
+my_connection_key = 'InstrumentationKey=c82b8d87-4932-4d53-8f61-4f1fbfea2a42;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/'
 
 # Logging
 logger = logging.getLogger(__name__)# TODO: Setup logger
