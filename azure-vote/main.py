@@ -23,25 +23,26 @@ from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 
 stats = stats_module.stats
 view_manager = stats.view_manager
+my_connection_key = 'InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/'
 
 # Logging
 logger = logging.getLogger(__name__)# TODO: Setup logger
-handler = AzureLogHandler(connection_string='InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/')
+handler = AzureLogHandler(connection_string=my_connection_key)
 logger.addHandler(handler)
-logger.addHandler(AzureEventHandler(connection_string='InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/'))
+logger.addHandler(AzureEventHandler(connection_string=my_connection_key))
 logger.setLevel(logging.INFO)
 # Metrics
 
 exporter = metrics_exporter.new_metrics_exporter(
     enable_standard_metrics = True,
-    connection_string='InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/')
+    connection_string=my_connection_key)
 view_manager.register_exporter(exporter)
 # TODO: Setup exporter
 
 # Tracing
 tracer = Tracer(
     exporter=AzureExporter(
-        connection_string='InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/'),
+        connection_string=my_connection_key),
     sampler=ProbabilitySampler(1.0),
 )# TODO: Setup tracer
 
@@ -50,7 +51,7 @@ app = Flask(__name__)
 # Requests
 middleware = FlaskMiddleware(
     app,
-    exporter=AzureExporter(connection_string="InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/"),
+    exporter=AzureExporter(connection_string=my_connection_key),
     sampler=ProbabilitySampler(rate=1.0),
 )# TODO: Setup flask middleware
 
