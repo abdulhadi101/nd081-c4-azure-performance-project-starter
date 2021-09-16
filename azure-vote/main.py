@@ -21,8 +21,9 @@ from opencensus.trace.samplers import ProbabilitySampler
 from opencensus.trace.tracer import Tracer
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 
-config_integration.trace_integrations(['logging'])
-config_integration.trace_integrations(['requests'])
+stats = stats_module.stats
+view_manager = stats.view_manager
+
 # Logging
 logger = logging.getLogger(__name__)# TODO: Setup logger
 handler = AzureLogHandler(connection_string='InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/')
@@ -30,8 +31,7 @@ logger.addHandler(handler)
 logger.addHandler(AzureEventHandler(connection_string='InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/'))
 logger.setLevel(logging.INFO)
 # Metrics
-stats = stats_module.stats
-view_manager = stats.view_manager
+
 exporter = metrics_exporter.new_metrics_exporter(
     enable_standard_metrics = True,
     connection_string='InstrumentationKey=d094c243-14ea-49b9-93de-550a02c9c337;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/')
