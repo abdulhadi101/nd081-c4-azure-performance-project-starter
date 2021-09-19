@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-resourceGroup="cloud-demo"
+resourceGroup="project-rg"
 location="eastus"
 osType="UbuntuLTS"
 vmssName="udacity-vmss"
@@ -23,10 +23,10 @@ storageType="Standard_LRS"
 # use the existing Resource group name, such as, resourceGroup="cloud-demo-153430" 
 echo "STEP 0 - Creating resource group $resourceGroup..."
 
-# az group create \
-# --name $resourceGroup \
-# --location $location \
-# --verbose
+az group create \
+--name $resourceGroup \
+--location $location \
+--verbose
 
 echo "Resource group created: $resourceGroup"
 
